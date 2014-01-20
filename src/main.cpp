@@ -1063,7 +1063,7 @@ uint256 static GetOrphanRoot(const CBlockHeader* pblock)
 
 int64 static GetBlockValue(int nHeight, int64 nFees)
 {
-    int64 nSubsidy = 50 * COIN;
+    int64 nSubsidy = 42 * COIN;
 
     // Subsidy is cut in half every 840000 blocks, which will occur approximately every 4 years
     nSubsidy >>= (nHeight / 840000); // Tekcoin: 840k blocks in ~4 years
@@ -1071,8 +1071,8 @@ int64 static GetBlockValue(int nHeight, int64 nFees)
     return nSubsidy + nFees;
 }
 
-static const int64 nTargetTimespan = 3.5 * 24 * 60 * 60; // Tekcoin: 3.5 days
-static const int64 nTargetSpacing = 2.5 * 60; // Tekcoin: 2.5 minutes
+static const int64 nTargetTimespan = 3.0 * 24 * 60 * 60; // Tekcoin: 3.5 days
+static const int64 nTargetSpacing = 2.0 * 60; // Tekcoin: 2.5 minutes
 static const int64 nInterval = nTargetTimespan / nTargetSpacing;
 
 //
@@ -2723,7 +2723,7 @@ bool LoadBlockIndex()
         pchMessageStart[1] = 0xc1;
         pchMessageStart[2] = 0xb7;
         pchMessageStart[3] = 0xdc;
-        hashGenesisBlock = uint256("0xf5ae71e26c74beacc88382716aced69cddf3dffff24f384e1808905e0188f68f");
+        hashGenesisBlock = uint256("0xcfe845c15e27f467f39732687aba43aa5e8345adf3dcd4b64654fb6fe965857e");
     }
 
     //
@@ -2756,12 +2756,12 @@ bool InitBlockIndex() {
         //   vMerkleTree: 97ddfbbae6
 
         // Genesis block
-        const char* pszTimestamp = "NY Times 05/Oct/2011 Steve Jobs, Apple’s Visionary, Dies at 56";
+        const char* pszTimestamp = "NY Times 05/Oct/2011 Epitech 42";
         CTransaction txNew;
         txNew.vin.resize(1);
         txNew.vout.resize(1);
         txNew.vin[0].scriptSig = CScript() << 486604799 << CBigNum(4) << vector<unsigned char>((const unsigned char*)pszTimestamp, (const unsigned char*)pszTimestamp + strlen(pszTimestamp));
-        txNew.vout[0].nValue = 50 * COIN;
+        txNew.vout[0].nValue = 42 * COIN;
         txNew.vout[0].scriptPubKey = CScript() << ParseHex("040184710fa689ad5023690c80f3a49c8f13f8d45b8c857fbcbc8bc4a8e4d3eb4b10f4d4604fa08dce601aaf0f470216fe1b51850b4acf21b179c45070ac7b03a9") << OP_CHECKSIG;
         CBlock block;
         block.vtx.push_back(txNew);
@@ -2770,12 +2770,12 @@ bool InitBlockIndex() {
         block.nVersion = 1;
         block.nTime    = 1390244944;
         block.nBits    = 0x1e0ffff0;
-        block.nNonce   = 2084524493;
+        block.nNonce   = 198334;
 
         if (fTestNet)
         {
             block.nTime    = 1390244944;
-            block.nNonce   = 385270584;
+            block.nNonce   = 198334;
         }
 
         //// debug print
@@ -2783,9 +2783,42 @@ bool InitBlockIndex() {
         printf("%s\n", hash.ToString().c_str());
         printf("%s\n", hashGenesisBlock.ToString().c_str());
         printf("%s\n", block.hashMerkleRoot.ToString().c_str());
-        assert(block.hashMerkleRoot == uint256("0x97ddfbbae6be97fd6cdf3e7ca13232a3afff2353e29badfab7f73011edd4ced9"));
+        assert(block.hashMerkleRoot == uint256("0x82105e7cccf5e2387dab4e323817a709983339d2b220cfa572d47ab0a960abc3"));
+       
+       
+       // If genesis block hash does not match, then generate new genesis hash.
+       if (true && block.GetHash() != hashGenesisBlock)
+       {
+           printf("Searching for genesis block...\n");
+           // This will figure out a valid hash and Nonce if you're
+           // creating a different genesis block:
+           uint256 hashTarget = CBigNum().SetCompact(block.nBits).getuint256();
+           uint256 thash;
+           char scratchpad[SCRYPT_SCRATCHPAD_SIZE];
+ 
+           loop
+           {
+               scrypt_1024_1_1_256_sp_generic(BEGIN(block.nVersion), BEGIN(thash), scratchpad);
+               if (thash <= hashTarget)
+                   break;
+               if ((block.nNonce & 0xFFF) == 0)
+               {
+                   printf("nonce %08X: hash = %s (target = %s)\n", block.nNonce, thash.ToString().c_str(), hashTarget.ToString().c_str());
+               }
+               ++block.nNonce;
+               if (block.nNonce == 0)
+               {
+                   printf("NONCE WRAPPED, incrementing time\n");
+                   ++block.nTime;
+               }
+           }
+           printf("block.nTime = %u \n", block.nTime);
+           printf("block.nNonce = %u \n", block.nNonce);
+           printf("block.GetHash = %s\n", block.GetHash().ToString().c_str());
+       }
+       
         block.print();
-        assert(hash == hashGenesisBlock);
+        assert(true && hash == hashGenesisBlock);
 
         // Start new block file
         try {
