@@ -31,7 +31,7 @@ CTxMemPool mempool;
 unsigned int nTransactionsUpdated = 0;
 
 map<uint256, CBlockIndex*> mapBlockIndex;
-uint256 hashGenesisBlock("0x12a765e31ffd4059bada1e25190f6e98c99d9714d334efa41a195a7e7e04bfe2");
+uint256 hashGenesisBlock("0xd2fc40e9cb54499b31043c173d5b1a955ede9898e6c71c223dfe3a2d9af2b7b6");
 static CBigNum bnProofOfWorkLimit(~uint256(0) >> 20); // Tekcoin: starting difficulty is 1 / 2^12
 CBlockIndex* pindexGenesisBlock = NULL;
 int nBestHeight = -1;
@@ -2768,9 +2768,9 @@ bool InitBlockIndex() {
         block.hashPrevBlock = 0;
         block.hashMerkleRoot = block.BuildMerkleTree();
         block.nVersion = 1;
-        block.nTime    = 1390244944;
+        block.nTime    = 1390254079;
         block.nBits    = 0x1e0ffff0;
-        block.nNonce   = 198334;
+        block.nNonce   = 751783;
 
         if (fTestNet)
         {
@@ -2785,8 +2785,7 @@ bool InitBlockIndex() {
         printf("%s\n", block.hashMerkleRoot.ToString().c_str());
         assert(block.hashMerkleRoot == uint256("0x82105e7cccf5e2387dab4e323817a709983339d2b220cfa572d47ab0a960abc3"));
        
-       
-       // If genesis block hash does not match, then generate new genesis hash.
+         // If genesis block hash does not match, then generate new genesis hash.
        if (true && block.GetHash() != hashGenesisBlock)
        {
            printf("Searching for genesis block...\n");
@@ -2816,9 +2815,10 @@ bool InitBlockIndex() {
            printf("block.nNonce = %u \n", block.nNonce);
            printf("block.GetHash = %s\n", block.GetHash().ToString().c_str());
        }
+
        
         block.print();
-        assert(true && hash == hashGenesisBlock);
+        assert(hash == hashGenesisBlock);
 
         // Start new block file
         try {
