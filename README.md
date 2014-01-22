@@ -1,10 +1,9 @@
 Tekcoin integration/staging tree
 ================================
 
-http://www.tekcoin.org
+http://www.tekcoin.io
 
-Copyright (c) 2009-2013 Bitcoin Developers
-Copyright (c) 2011-2013 Tekcoin Developers
+Copyright (c) 2014 Tekcoin Developers
 
 What is Tekcoin?
 ----------------
@@ -15,11 +14,11 @@ Tekcoin is a lite version of Bitcoin using scrypt as a proof-of-work algorithm.
  - ~84 million total coins
 
 The rest is the same as Bitcoin.
- - 50 coins per block
+ - 42 coins per block
  - 2016 blocks to retarget difficulty
 
 For more information, as well as an immediately useable, binary version of
-the Tekcoin client sofware, see http://www.tekcoin.org.
+the Tekcoin client sofware, see http://www.tekcoin.io.
 
 License
 -------
