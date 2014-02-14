@@ -71,3 +71,7 @@ Unit tests for the GUI code are in `src/qt/test/`. To compile and run them:
     make -f Makefile.test
     ./tekcoin-qt_test
 
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/stumpyfr/tekcoin/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
