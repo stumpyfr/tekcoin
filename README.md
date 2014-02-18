@@ -1,9 +1,14 @@
 Tekcoin integration/staging tree
 ================================
-
+<p align="center">
+<img src="http://www.stumpy.fr/wp-content/uploads/2014/02/TekCoin.jpg"></img>
+<br/>
 http://www.tekcoin.io
-
+<br/>
 Copyright (c) 2014 Tekcoin Developers
+</p>
+
+
 
 What is Tekcoin?
 ----------------
